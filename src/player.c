@@ -40,6 +40,8 @@ Entity *player_new(Vector3D position,char *modelName,char *charName, int isActiv
     ent->activePlayer = isActive;
     ent->charName = charName;
     ent->hasGravity = 1;
+    ent->hbType = HB_SPHERE;
+    ent->hbRadius = 2;
     return ent;
 }
 

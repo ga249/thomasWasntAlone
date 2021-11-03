@@ -15,6 +15,7 @@
 #include "agumon.h"
 #include "player.h"
 #include "world.h"
+#include "collisions.h"
 
 int main(int argc,char *argv[])
 {
@@ -57,8 +58,6 @@ int main(int argc,char *argv[])
     gf3d_camera_set_scale(vector3d(1,1,1));
     
     slog("gf3d main loop begin");
-    //player_new(vector3d(0,0,20), 1);
-    //player_new(vector3d(20,0,20), 0);
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
@@ -67,6 +66,8 @@ int main(int argc,char *argv[])
         entity_think_all();
         entity_update_all();
         world_run_updates(w);
+
+        
 
         gf3d_camera_update_view();
         gf3d_camera_get_view_mat4(gf3d_vgraphics_get_view_matrix());

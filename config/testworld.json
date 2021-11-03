@@ -14,7 +14,7 @@
             },
             "charDino":
             {
-                "modelName":"dino",
+                "modelName":"key",
                 "xpos": 20.0,
                 "ypos": 20.0,
                 "zpos": 0.0,

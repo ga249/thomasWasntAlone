@@ -6,6 +6,9 @@
 #include "gf3d_model.h"
 
 #define ENT_PLAYER 0
+#define HB_SPHERE  1
+#define HB_RECT  2
+
 
 typedef struct Entity_S
 {
@@ -20,10 +23,13 @@ typedef struct Entity_S
     Vector3D    velocity;
     Vector3D    acceleration;
     
+    int         hbType;
+    float       hbRadius;
+    Vector3D    hbMin,hbMax;
     
     Vector3D    scale;
     Vector3D    rotation;
-    Vector3D    fwd;
+    Vector3D    fwd;        /**<forward direction vector of ent*/
     
     int         activePlayer;
     int         entType;
@@ -85,5 +91,7 @@ Entity *entity_get_active_player();
 Entity *entity_get_player_by_name(char *charName);
 
 int entity_is_active_player();
+
+int ent_is_grounded(Entity *ent);
 
 #endif

@@ -13,8 +13,8 @@ typedef struct
 {
     Matrix4 modelMat;
     Model *worldModel;
-    List *spawnList;        //entities to spawn
     List *entityList;       //entities that exist in the world
+    int numKeys;
 }World;
 
 World *world_load(char *filename);

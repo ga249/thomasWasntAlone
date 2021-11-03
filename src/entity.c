@@ -122,10 +122,11 @@ void entity_update(Entity *self)
 
     if (self->hasGravity)
     {
-        if(self->position.z > 0)
+        if(!ent_is_grounded(self))
         {
             self->acceleration.z = -.005;
-        }else{
+        }else if (ent_is_grounded(self)){
+            self->position.z += .5;
             self->position.z = 0;
             self->acceleration.z = 0;
         }
@@ -212,4 +213,15 @@ int entity_is_active_player()
     return 0;
 }
 
+int ent_is_grounded(Entity *ent)
+{
+    float test;
+    test = ent->position.z -.1;
+    if (test < 0.0)
+    {
+        return 1;
+    }else{
+        return 0;
+    }
+}
 /*eol@eof*/
