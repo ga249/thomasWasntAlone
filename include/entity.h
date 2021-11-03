@@ -1,48 +1,89 @@
-#ifndef __ENTITY_H_
-#define __ENTITY_H_
+#ifndef __ENTITY_H__
+#define __ENTITY_H__
 
 #include "gfc_types.h"
-//#include ""
 
 #include "gf3d_model.h"
 
-typedef struct  Entity_S
+#define ENT_PLAYER 0
+
+typedef struct Entity_S
 {
-    Uint8           _inuse;     /**<keeps track of memory usage*/
-    Model           *model;     /**<pointer to the entity model to draw (optional)*/
-    Matrix4         *modelMat;   /**<model matrix for entity*/
-    void            (*think)(struct Entity_S *self);        /**<pointer to the think function*/
-    Uint32          health;     /**<entity dies when it reaches zero*/
+    Uint8       _inuse;     /**<keeps track of memory usage*/
+    Matrix4     modelMat;   /**<orientation matrix for the model*/
+    Model      *model;      /**<pointer to the entity model to draw  (optional)*/
+    void       (*think)(struct Entity_S *self); /**<pointer to the think function*/
+    void       (*update)(struct Entity_S *self); /**<pointer to the update function*/
+    void       (*draw)(struct Entity_S *self); /**<pointer to an optional extra draw funciton*/
+    
+    Vector3D    position;  
+    Vector3D    velocity;
+    Vector3D    acceleration;
+    
+    
+    Vector3D    scale;
+    Vector3D    rotation;
+    Vector3D    fwd;
+    
+    int         activePlayer;
+    int         entType;
+
+    int         hasGravity;
+    
+    char       *charName;
+    void *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/
 }Entity;
 
-
 /**
- * @brief   initialize entity system
- * @param   maxEntities max number of entities
+ * @brief initializes the entity subsystem
+ * @param maxEntities the limit on number of entities that can exist at the same time
  */
-void entity_system_init(Uint32 maxEnts);
+void entity_system_init(Uint32 maxEntities);
 
 /**
- * @brief   create an entity
- * @return  a pointer to an entity
+ * @brief provide a pointer to a new empty entity
+ * @return NULL on error or a valid entity pointer otherwise
  */
 Entity *entity_new();
 
 /**
- * @brief   free an entity
- * @param self  a pointer to an entity
+ * @brief free a previously created entity from memory
+ * @param self the entity in question
  */
 void entity_free(Entity *self);
 
+
 /**
- * @brief   draw an entity
- * @param self  a pointer to an entity
+ * @brief Draw an entity in the current frame
+ * @param self the entity in question
  */
-void entity_draw(Entity *self, Uint32 bufferFrame, VkCommandBuffer commandBuffer);
+void entity_draw(Entity *self);
 
-void entity_draw_all(Uint32 bufferFrame, VkCommandBuffer commandBuffer);
+/**
+ * @brief draw ALL active entities
+ */
+void entity_draw_all();
 
+/**
+ * @brief Call an entity's think function if it exists
+ * @param self the entity in question
+ */
 void entity_think(Entity *self);
 
+/**
+ * @brief run the think functions for ALL active entities
+ */
+void entity_think_all();
+
+/**
+ * @brief run the update functions for ALL active entities
+ */
+void entity_update_all();
+
+Entity *entity_get_active_player();
+
+Entity *entity_get_player_by_name(char *charName);
+
+int entity_is_active_player();
 
 #endif

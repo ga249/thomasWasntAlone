@@ -1,0 +1,26 @@
+{
+    "world":
+    {
+        "model":"tworld",
+        "entityList":
+        {
+            "charBall":
+            {
+                "modelName":"sphere",
+                "xpos": 0.0,
+                "ypos": 0.0,
+                "zpos": 0.0,
+                "isActive": 1
+            },
+            "charDino":
+            {
+                "modelName":"dino",
+                "xpos": 20.0,
+                "ypos": 20.0,
+                "zpos": 0.0,
+                "isActive": 0
+            }
+        }
+    }
+    
+}

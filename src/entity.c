@@ -1,95 +1,215 @@
 #include <stdlib.h>
-#include <simple_logger.h>
+#include <string.h>
+
+#include "simple_logger.h"
 
 #include "entity.h"
 
-typedef struct 
+typedef struct
 {
-    Uint32  maxEnts;         /**<Maximum number of entities*/
-    Entity  *entityList;     /**<List of entities*/
+    Entity *entity_list;
+    Uint32  entity_count;
+    
 }EntityManager;
 
 static EntityManager entity_manager = {0};
 
-void entity_manager_close()
+void entity_system_close()
 {
     int i;
-    for (i = 0; i < entity_manager.maxEnts; i++)
+    for (i = 0; i < entity_manager.entity_count; i++)
     {
-        if (entity_manager.entityList[i]._inuse)
-        {
-            entity_free(&entity_manager.entityList[i]);
-        }
+        entity_free(&entity_manager.entity_list[i]);        
     }
-    entity_manager.maxEnts = 0;
-    free(entity_manager.entityList);
-    entity_manager.entityList = NULL;
-    slog("entity manager closed");
+    free(entity_manager.entity_list);
+    memset(&entity_manager,0,sizeof(EntityManager));
+    slog("entity_system closed");
 }
 
-void entity_system_init(Uint32 maxEnts)
+void entity_system_init(Uint32 maxEntities)
 {
-    if (entity_manager.entityList != NULL)
+    entity_manager.entity_list = gfc_allocate_array(sizeof(Entity),maxEntities);
+    if (entity_manager.entity_list == NULL)
     {
-        //TODO: cleanup
-    }
-    if (!maxEnts)
-    {
-        slog("cannot initialize a zero size entity list!");
+        slog("failed to allocate entity list, cannot allocate ZERO entities");
         return;
     }
-    entity_manager.entityList = malloc(sizeof(Entity) * maxEnts);
-    if (entity_manager.entityList == NULL)
-    {
-        slog("failed to allocate %i entities for the entity manager", maxEnts);
-        return;
-    }
-    entity_manager.maxEnts = maxEnts;
-    memset(entity_manager.entityList,0,sizeof(Entity)*maxEnts);
-    slog("entity manager initialized");
-    atexit(entity_manager_close);
-
+    entity_manager.entity_count = maxEntities;
+    atexit(entity_system_close);
+    slog("entity_system initialized");
 }
 
 Entity *entity_new()
 {
     int i;
-    if (entity_manager.entityList == NULL)
+    for (i = 0; i < entity_manager.entity_count; i++)
     {
-        slog("entity system does not exist");
-        return NULL;
+        if (!entity_manager.entity_list[i]._inuse)// not used yet, so we can!
+        {
+            entity_manager.entity_list[i]._inuse = 1;
+            gfc_matrix_identity(entity_manager.entity_list[i].modelMat);
+            entity_manager.entity_list[i].scale.x = 1;
+            entity_manager.entity_list[i].scale.y = 1;
+            entity_manager.entity_list[i].scale.z = 1;
+            return &entity_manager.entity_list[i];
+        }
     }
-    for (i = 0; i < entity_manager.maxEnts; i++)
-    {
-        if (entity_manager.entityList[i]._inuse)continue; //entity in use
-        memset(&entity_manager.entityList[i],0,sizeof(Entity));
-        entity_manager.entityList[i]._inuse = 1;
-        return &entity_manager.entityList[i];
-    }
-    slog("out of open entity slots in memory!");
+    slog("entity_new: no free space in the entity list");
     return NULL;
 }
 
 void entity_free(Entity *self)
 {
     if (!self)return;
-    //destroy
+    //MUST DESTROY
     gf3d_model_free(self->model);
     memset(self,0,sizeof(Entity));
 }
 
-void entity_draw(Entity *self, Uint32 bufferFrame, VkCommandBuffer commandBuffer)
+
+void entity_draw(Entity *self)
 {
     if (!self)return;
-    gf3d_model_draw(self->model,bufferFrame,commandBuffer, self->modelMat);
+    gf3d_model_draw(self->model,self->modelMat);
 }
 
-void entity_draw_all(Uint32 bufferFrame, VkCommandBuffer commandBuffer)
+void entity_draw_all()
 {
     int i;
-    for (i = 0; i < entity_manager.maxEnts; i++)
+    for (i = 0; i < entity_manager.entity_count; i++)
     {
-        if (!entity_manager.entityList[i]._inuse)continue; //entity not in use
-        entity_draw(&entity_manager.entityList[i],bufferFrame, commandBuffer);
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        entity_draw(&entity_manager.entity_list[i]);
     }
 }
+
+void entity_think(Entity *self)
+{
+    if (!self)return;
+    if (self->think)
+    {
+        //if (self->entType != ENT_PLAYER)
+        //{
+        //    self->think(self);
+        //}else{
+        //    if(self->activePlayer)self->think(self);
+        //}
+        self->think(self);
+    }
+}
+
+void entity_think_all()
+{
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        entity_think(&entity_manager.entity_list[i]);
+    }
+}
+
+
+void entity_update(Entity *self)
+{
+    if (!self)return;
+    // HANDLE ALL COMMON UPDATE STUFF
+
+    if (self->hasGravity)
+    {
+        if(self->position.z > 0)
+        {
+            self->acceleration.z = -.005;
+        }else{
+            self->position.z = 0;
+            self->acceleration.z = 0;
+        }
+    }
+    
+    vector3d_add(self->position,self->position,self->velocity);
+    vector3d_add(self->velocity,self->acceleration,self->velocity);
+    
+    gfc_matrix_identity(self->modelMat);
+    gfc_matrix_scale(self->modelMat,self->scale);
+    
+    gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.z,vector3d(0,0,1));
+    gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.y,vector3d(0,1,0));
+    gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.x,vector3d(1,0,0));
+    
+    gfc_matrix_translate(self->modelMat,self->position);
+    
+    if (self->update)self->update(self);
+}
+
+void entity_update_all()
+{
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        entity_update(&entity_manager.entity_list[i]);
+    }
+}
+
+Entity *entity_get_active_player()
+{
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        if (entity_manager.entity_list[i].activePlayer == 1)
+        {
+            return &entity_manager.entity_list[i];
+        }
+    }
+    slog("Active player doesn't exist");
+    return NULL;
+}
+
+Entity *entity_get_player_by_name(char *charName)
+{
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        if (strcmp(entity_manager.entity_list[i].charName,(const char *)charName))
+        {
+            return &entity_manager.entity_list[i];
+        }
+    }
+    slog("CharName %s doesn't exist", charName);
+    return NULL;
+}
+
+int entity_is_active_player()
+{
+    int i;
+    for (i = 0; i < entity_manager.entity_count; i++)
+    {
+        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        {
+            continue;// skip this iteration of the loop
+        }
+        if (entity_manager.entity_list[i].activePlayer == 1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/*eol@eof*/
