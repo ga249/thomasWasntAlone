@@ -1,7 +1,7 @@
 {
     "world":
     {
-        "model":"tworld",
+        "model":"level",
         "entityList":
         {
             "charBall":
