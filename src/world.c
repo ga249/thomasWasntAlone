@@ -9,6 +9,7 @@
 #include "button.h"
 #include "pressure_plate.h"
 #include "jump_pad.h"
+#include "telepad.h"
 
 static World *current_level = NULL;
 
@@ -41,7 +42,7 @@ World *world_load(char *filename)
     const char *modelName = NULL;
     int isActive, doesSpawn;
     float xpos, ypos, zpos;
-    Vector3D pos;
+    Vector3D pos,pos2;
 
     w = gfc_allocate_array(sizeof(World),1);
     if (w == NULL)
@@ -198,6 +199,15 @@ World *world_load(char *filename)
     pos.y = 30;
     pos.z = -1;
     jpad_new(pos);
+
+    pos.x = 40;
+    pos.y = 30;
+    pos.z = -1;
+    pos2.x = 40;
+    pos2.y = -40;
+    pos2.z = -1;
+    
+    telepad_make_pair(telepad_new(pos),pos2);
 
     sj_free(eListjson);
     sj_free(entjson);
