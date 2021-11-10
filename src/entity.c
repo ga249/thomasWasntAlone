@@ -63,6 +63,7 @@ void entity_free(Entity *self)
     if (!self)return;
     //MUST DESTROY
     gf3d_model_free(self->model);
+    if (self->keys)free(self->keys);
     memset(self,0,sizeof(Entity));
 }
 
@@ -144,7 +145,7 @@ void entity_update(Entity *self)
     
     gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.z,vector3d(0,0,1));
     gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.y,vector3d(0,1,0));
-    gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.x,vector3d(1,0,0));
+    //gfc_matrix_rotate(self->modelMat,self->modelMat,self->rotation.x,vector3d(1,0,0));
     
     gfc_matrix_translate(self->modelMat,self->position);
     

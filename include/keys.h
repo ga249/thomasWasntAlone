@@ -4,9 +4,9 @@
 #include "gfc_types.h"
 #include "entity.h"
 
-void keys_init();
-
 Entity *new_key(Vector3D position,char *modelName);
+
+void key_remove_from_character(Entity *character);
 
 void key_think(Entity *self);
 

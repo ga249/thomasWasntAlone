@@ -26,7 +26,7 @@ int main(int argc,char *argv[])
     const Uint8 * keys;
     World *w;
     Vector3D keypos = {-20,20,0};
-    Vector3D keypos2 = {-20,30,10};
+    Vector3D keypos2 = {-20,-30,0};
     
     for (a = 1; a < argc;a++)
     {
@@ -49,7 +49,6 @@ int main(int argc,char *argv[])
 	slog_sync();
     
     entity_system_init(1024);
-    keys_init();
     w = world_load("config/testworld.json");
 
     new_key(keypos,"key");

@@ -1,14 +1,9 @@
 #include "simple_logger.h"
 #include "gfc_types.h"
+#include "gfc_list.h"
 #include "characters.h"
 
 #include "player.h"
-
-#define CHAR_1  1
-#define CHAR_2  2
-#define CHAR_3  3
-#define CHAR_4  4
-#define CHAR_5  5
 
 void character_load_common(Entity *self, Vector3D position)
 {
@@ -18,6 +13,8 @@ void character_load_common(Entity *self, Vector3D position)
     self->rotation.x = -M_PI;
     self->entType = ENT_PLAYER;
     self->hasGravity = 1;
+    self->keys = gfc_list_new_size(20);
+    self->keyCount = 0;
     return;
 }
 
@@ -153,14 +150,14 @@ Entity *character_fatBoi_spawn(Vector3D position)
     character_load_common(self, position);
     self->hbType = HB_RECT;
     max = self->position;
-    max.x += 1;
-    max.y += 1;             //TODO: fix offset for fatBoi hitbox
-    max.z += 1;
+    max.x += 2;
+    max.y += 2;             //TODO: fix offset for fatBoi hitbox
+    max.z += .5;
     self->hbMax = max;
     min = self->position;
-    min.x -= 1;
-    min.y -= 1;             //TODO: fix offset for fatBoi hitbox
-    min.z -= 1;
+    min.x -= 2;
+    min.y -= 2;             //TODO: fix offset for fatBoi hitbox
+    min.z -= .5;
     self->hbMin = min;
     return self;
 }

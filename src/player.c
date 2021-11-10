@@ -4,6 +4,7 @@
 #include "gf3d_camera.h"
 #include "player.h"
 #include "world.h"
+#include "characters.h"
 
 
 void player_think(Entity *self);
@@ -95,20 +96,79 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_RIGHT])self->rotation.z -= 0.0010;
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0010;
 
+    slog("keyCount: %i", self->keyCount);
+
 }
 
 void player_update(Entity *self)
 {
     if (!self)return;
-    //if (!strcmp(self->charName,get_active_character()->charName))return;
     Vector3D camPos = self->position;
     Vector3D fwd = self->fwd;
-    vector3d_set_magnitude(&fwd, 6);
+    Vector3D min,max;
+    vector3d_set_magnitude(&fwd, 7);
     vector3d_add(camPos,camPos,vector3d_negative(fwd));
-    camPos.z += 2;
+    camPos.z += 3;
 
     gf3d_camera_set_position(camPos);
     gf3d_camera_set_rotation(self->rotation);
+
+    switch (self->char_ID)
+    {
+    case CHAR_2:
+        max = self->position;
+        max.x += 1;
+        max.y += 1;
+        max.z += 1;
+        self->hbMax = max;
+        min = self->position;
+        min.x -= 1;
+        min.y -= 1;
+        min.z -= 1;
+        self->hbMin = min;
+        break;
+    
+    case CHAR_3:
+        max = self->position;
+        max.x += 1;
+        max.y += 1;
+        max.z += 3;
+        self->hbMax = max;
+        min = self->position;
+        min.x -= 1;
+        min.y -= 1;
+        min.z -= 1;
+        self->hbMin = min;
+        break;
+
+    case CHAR_4:
+        max = self->position;
+        max.x += .5;
+        max.y += .5;
+        max.z += .5;
+        self->hbMax = max;
+        min = self->position;
+        min.x -= .5;
+        min.y -= .5;
+        min.z -= .5;
+        self->hbMin = min;
+        break;
+
+    case CHAR_5:
+        max = self->position;
+        max.x += 2;
+        max.y += 2;
+        max.z += .5;
+        self->hbMax = max;
+        min = self->position;
+        min.x -= 2;
+        min.y -= 2;
+        min.z -= .5;
+        self->hbMin = min;
+        break;
+    default:
+        break;
+    }
 }
 
 /*eol@eof*/

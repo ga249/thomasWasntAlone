@@ -5,6 +5,8 @@
 #include "world.h"
 #include "player.h"
 #include "characters.h"
+#include "door.h"
+#include "button.h"
 
 static World *current_level = NULL;
 
@@ -175,7 +177,10 @@ World *world_load(char *filename)
             character_fatBoi_spawn(pos);
         //}
     }
-
+    pos.x = 25;
+    pos.y = -15;
+    pos.z = 0;
+    door_new(pos);
 
     sj_free(eListjson);
     sj_free(entjson);

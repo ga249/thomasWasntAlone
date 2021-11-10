@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.c": "c",
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "limits": "c"
     }
 }

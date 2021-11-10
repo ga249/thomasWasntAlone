@@ -1,9 +1,25 @@
 #include "simple_logger.h"
 #include "collisions.h"
 
+float distance_between_pointsSQRD(Vector3D p1, Vector3D p2)
+{
+    float dist = (p1.x - p2.x) * (p1.x - p2.x) +
+                 (p1.y - p2.y) * (p1.y - p2.y) +
+                 (p1.z - p2.z) * (p1.z - p2.z);
+    return dist;
+}
 
 int collision_sphere_sphere(Vector3D s1pos,float s1Radius,Vector3D s2pos,float s2Radius)
 {
+    //float distSquared = distance_between_pointsSQRD(s1pos, s2pos);
+    //double dist = sqrt(distSquared);
+    //if (dist < (s1Radius + s2Radius))
+    //{
+    //    return 1;
+    //}else{
+    //    return 0;
+    //}
+    
     if ((s1pos.x + s1Radius) < (s2pos.x - s2Radius) ||
         (s1pos.x) > (s2pos.x + s2Radius) ||
         (s1pos.y) < (s2pos.y - s2Radius) ||
@@ -14,6 +30,20 @@ int collision_sphere_sphere(Vector3D s1pos,float s1Radius,Vector3D s2pos,float s
         return 0;
     }else{
         return 1;
+    }
+}
+
+
+int collision_point_sphere(Vector3D point, Vector3D sphere, float radius)
+{
+    float dist = (point.x - sphere.x) * (point.x - sphere.x) +
+                 (point.y - sphere.y) * (point.y - sphere.y) +
+                 (point.z - sphere.z) * (point.z - sphere.z);
+    if (dist < (radius * radius))
+    {
+        return 1;
+    }else{
+        return 0;
     }
 }
 
@@ -32,19 +62,32 @@ int collision_rect_rect(Vector3D r1min,Vector3D r1max,Vector3D r2min,Vector3D r2
     }
 }
 
-int collision_sphere_rect(Vector3D spos, float sradius, Vector3D rmin, Vector3D rmax)
+int collision_sphere_rect(Vector3D sphere, float sradius, Vector3D rmin, Vector3D rmax)
 {
-    if ((spos.x + sradius) < rmax.x ||
-        (spos.x - sradius) > rmin.x ||
-        (spos.z + sradius) > rmax.z ||
-        (spos.z - sradius) < rmin.z ||
-        (spos.y + sradius) < rmax.y ||
-        (spos.y - sradius) > rmin.y )
+    float x = SDL_max(rmin.x, SDL_min(sphere.x, rmax.x));
+    float y = SDL_max(rmin.y, SDL_min(sphere.y, rmax.y));
+    float z = SDL_max(rmin.z, SDL_min(sphere.z, rmax.z));
+
+    Vector3D pt = {x,y,z};
+
+    if(collision_point_sphere(pt,sphere,sradius))
     {
-        return 0;
-    }else{
         return 1;
+    }else{
+        return 0;
     }
+    
+    //if ((spos.x + sradius) < rmax.x ||
+    //    (spos.x - sradius) > rmin.x ||
+    //    (spos.z + sradius) > rmax.z ||
+    //    (spos.z - sradius) < rmin.z ||
+    //    (spos.y + sradius) < rmax.y ||
+    //    (spos.y - sradius) > rmin.y )
+    //{
+    //    return 0;
+    //}else{
+    //    return 1;
+    //}
 }
 
 int collision_ent_ent(Entity *ent1, Entity *ent2)
@@ -66,6 +109,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
         case HB_RECT:
             if (collision_sphere_rect(ent1->position, ent1->hbRadius, ent2->hbMin,ent2->hbMax))
             {
+                slog("TOUCHINGGGGG");
                 return 1;
             }
             break;
@@ -79,6 +123,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
             //sphere vs rect collision test
             if (collision_sphere_rect(ent2->position, ent2->hbRadius, ent1->hbMin,ent1->hbMax))
             {
+                slog("TOUCHINGGGGG");
                 return 1;
             }
             break;
@@ -87,6 +132,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
             //rect vs rect collision test
             if (collision_rect_rect(ent1->hbMin, ent1->hbMax, ent2->hbMin, ent2->hbMax))
             {
+                slog("TOUCHINGGGGG");
                 return 1;
             }
             break;

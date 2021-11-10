@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 #include "gfc_types.h"
+#include "gfc_list.h"
 
 #include "gf3d_model.h"
 
@@ -40,6 +41,11 @@ typedef struct Entity_S
     int         char_ID;
     char       *charName;
     struct Entity_S *target;
+
+    List       *keys;
+    int         keyCount;
+
+    int         unlocked;
     void       *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/
 }Entity;
 

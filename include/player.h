@@ -12,5 +12,7 @@ void    player_think(Entity *self);
 
 void    player_update(Entity *self);
 
+Vector3D vector3d_negative(Vector3D v);
+
 
 #endif

@@ -4,16 +4,8 @@
 #include "collisions.h"
 #include "world.h"
 
-#define KEY_OFFSET 2.1
+#define KEY_OFFSET 2.5
 
-static List *keyList = NULL;
-
-void keys_init()
-{
-    keyList = gfc_list_new();
-
-
-}
 
 Entity *new_key(Vector3D position,char *modelName)
 {
@@ -46,11 +38,23 @@ Entity *new_key(Vector3D position,char *modelName)
 void key_think(Entity *self)
 {
     if(!self)return;
+    if(self->target)
+    {
+        if(self->target->char_ID == get_active_character()->char_ID)return;
+    }
     if (collision_ent_ent(self,get_active_character()))
     {
+        if(self->target)
+        {
+            gfc_list_delete_data(self->target->keys,self);
+        }
+        
         self->target = get_active_character();
-        gfc_list_append(keyList, self);
+        gfc_list_prepend(self->target->keys, self);
+        self->target->keyCount += 1;
+
     }
+
 }
 
 void key_update(Entity *self)
@@ -59,7 +63,7 @@ void key_update(Entity *self)
     int keyOffsetMultiplier;
     if(self->target)
     {
-        keyOffsetMultiplier = gfc_list_get_item_index(keyList,self);
+        keyOffsetMultiplier = gfc_list_get_item_index(self->target->keys,self);
         
         keyOffsetMultiplier += 1;
         self->position = self->target->position;
