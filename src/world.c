@@ -182,6 +182,11 @@ World *world_load(char *filename)
     pos.z = 0;
     door_new(pos);
 
+    pos.x = 25;
+    pos.y = -30;
+    pos.z = 2;
+    button_new(pos);
+
     sj_free(eListjson);
     sj_free(entjson);
     sj_free(json);

@@ -11,6 +11,7 @@
 #define HB_SPHERE  2
 #define HB_RECT    3
 #define ENT_DOOR   5
+#define ENT_BUTTON 6
 
 
 typedef struct Entity_S

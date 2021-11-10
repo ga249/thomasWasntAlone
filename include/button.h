@@ -11,4 +11,8 @@
  */
 Entity *button_new(Vector3D position);
 
+void button_think(Entity *self);
+
+void button_update(Entity *self);
+
 #endif
