@@ -3,6 +3,7 @@
 
 #include "gf3d_camera.h"
 #include "player.h"
+#include "world.h"
 
 
 void player_think(Entity *self);
@@ -37,7 +38,6 @@ Entity *player_new(Vector3D position,char *modelName,char *charName, int isActiv
     vector3d_copy(ent->position,position);
     ent->rotation.x = -M_PI;
     ent->entType = ENT_PLAYER;
-    ent->activePlayer = isActive;
     ent->charName = charName;
     ent->hasGravity = 1;
     ent->hbType = HB_SPHERE;
@@ -48,7 +48,7 @@ Entity *player_new(Vector3D position,char *modelName,char *charName, int isActiv
 
 void player_think(Entity *self)
 {
-    if (!self->activePlayer)return;
+    //if (!strcmp(self->charName,get_active_character()->charName))return;
     Vector3D forward;
     Vector3D right;
     Vector3D up;
@@ -68,7 +68,7 @@ void player_think(Entity *self)
     //slog("rot.x: %f, rot.y: %f, rot.z: %f", self->rotation.x,self->rotation.y,self->rotation.z);
 
     
-    slog("z: %f", self->position.z);
+    //slog("z: %f", self->position.z);
     if (keys[SDL_SCANCODE_W])
     {   
         vector3d_add(self->position,self->position,forward);
@@ -100,7 +100,7 @@ void player_think(Entity *self)
 void player_update(Entity *self)
 {
     if (!self)return;
-    if (!self->activePlayer)return;
+    //if (!strcmp(self->charName,get_active_character()->charName))return;
     Vector3D camPos = self->position;
     Vector3D fwd = self->fwd;
     vector3d_set_magnitude(&fwd, 6);

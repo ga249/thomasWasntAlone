@@ -16,6 +16,7 @@
 #include "player.h"
 #include "world.h"
 #include "collisions.h"
+#include "keys.h"
 
 int main(int argc,char *argv[])
 {
@@ -24,6 +25,8 @@ int main(int argc,char *argv[])
     Uint8 validate = 0;
     const Uint8 * keys;
     World *w;
+    Vector3D keypos = {-20,20,0};
+    Vector3D keypos2 = {-20,30,10};
     
     for (a = 1; a < argc;a++)
     {
@@ -46,8 +49,11 @@ int main(int argc,char *argv[])
 	slog_sync();
     
     entity_system_init(1024);
-    
+    keys_init();
     w = world_load("config/testworld.json");
+
+    new_key(keypos,"key");
+    new_key(keypos2,"key");
 
     for (a = 0; a < 10;a++)
     {
@@ -63,11 +69,14 @@ int main(int argc,char *argv[])
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         
-        entity_think_all();
-        entity_update_all();
         world_run_updates(w);
-
+        entity_think_all();
+        active_character_think();
+        entity_update_all();
+        active_character_update();
         
+
+        //slog("active player: %s", ent_get_name(entity_get_active_player()));
 
         gf3d_camera_update_view();
         gf3d_camera_get_view_mat4(gf3d_vgraphics_get_view_matrix());

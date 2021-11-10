@@ -6,8 +6,10 @@
 #include "gf3d_model.h"
 
 #define ENT_PLAYER 0
-#define HB_SPHERE  1
-#define HB_RECT  2
+#define ENT_KEY    1
+#define HB_SPHERE  2
+#define HB_RECT    3
+#define ENT_DOOR   5
 
 
 typedef struct Entity_S
@@ -17,7 +19,7 @@ typedef struct Entity_S
     Model      *model;      /**<pointer to the entity model to draw  (optional)*/
     void       (*think)(struct Entity_S *self); /**<pointer to the think function*/
     void       (*update)(struct Entity_S *self); /**<pointer to the update function*/
-    void       (*draw)(struct Entity_S *self); /**<pointer to an optional extra draw funciton*/
+    void       (*collide)(struct Entity_S *self); /**<pointer to an optional collide funciton*/
     
     Vector3D    position;  
     Vector3D    velocity;
@@ -31,13 +33,14 @@ typedef struct Entity_S
     Vector3D    rotation;
     Vector3D    fwd;        /**<forward direction vector of ent*/
     
-    int         activePlayer;
     int         entType;
 
     int         hasGravity;
     
+    int         char_ID;
     char       *charName;
-    void *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/
+    struct Entity_S *target;
+    void       *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/
 }Entity;
 
 /**
@@ -86,12 +89,12 @@ void entity_think_all();
  */
 void entity_update_all();
 
-Entity *entity_get_active_player();
+Entity *entity_get_character_by_id(int id);
 
 Entity *entity_get_player_by_name(char *charName);
 
-int entity_is_active_player();
-
 int ent_is_grounded(Entity *ent);
+
+char *ent_get_name(Entity *ent);
 
 #endif

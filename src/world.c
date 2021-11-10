@@ -4,14 +4,38 @@
 
 #include "world.h"
 #include "player.h"
+#include "characters.h"
 
+static World *current_level = NULL;
+
+World *get_current_level()
+{
+    return current_level;
+}
+
+Entity *get_active_character()
+{
+    return current_level->activeCharacter;
+}
+
+void active_character_think()
+{
+    get_active_character()->think(get_active_character());
+    return;
+}
+
+void active_character_update()
+{
+    get_active_character()->update(get_active_character());
+    return;
+}
 
 World *world_load(char *filename)
 {
     SJson *json,*wjson,*eListjson,*entjson;
     World *w = NULL;
     const char *modelName = NULL;
-    int isActive;
+    int isActive, doesSpawn;
     float xpos, ypos, zpos;
     Vector3D pos;
 
@@ -57,38 +81,106 @@ World *world_load(char *filename)
     eListjson = sj_object_get_value(wjson, "entityList");
 
     entjson = sj_object_get_value(eListjson, "charBall");
-    modelName = sj_get_string_value(sj_object_get_value(entjson,"modelName"));
-    if (modelName)
+    sj_get_integer_value(sj_object_get_value(entjson, "doesSpawn"), &doesSpawn);
+    if (doesSpawn)
     {
-        slog("name: %s", modelName);
+        sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
+        sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
+        sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
+        sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
+        pos.x = xpos;
+        pos.y = ypos;
+        pos.z = zpos;
+        //if (isActive == 1)
+        //{
+            w->activeCharacter = character_ball_spawn(pos);
+        //}else{
+        //    character_ball_spawn(pos);
+        //}
     }
-    sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
-    sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
-    sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
-    sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
-    pos.x = xpos;
-    pos.y = ypos;
-    pos.z = zpos;
-    player_new(pos,(char *)modelName,"ball", isActive);
+    
 
-    entjson = sj_object_get_value(eListjson, "charDino");
-    modelName = sj_get_string_value(sj_object_get_value(entjson,"modelName"));
-    if (modelName)
+    entjson = sj_object_get_value(eListjson, "charBox");
+    sj_get_integer_value(sj_object_get_value(entjson, "doesSpawn"), &doesSpawn);
+    if (doesSpawn)
     {
-        slog("name: %s", modelName);
+        sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
+        sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
+        sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
+        sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
+        pos.x = xpos;
+        pos.y = ypos;
+        pos.z = zpos;
+        //if (isActive == 1)
+        //{
+        //    w->activeCharacter = character_box_spawn(pos);
+        //}else{
+            character_box_spawn(pos);
+        //}
     }
-    sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
-    sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
-    sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
-    sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
-    pos.x = xpos;
-    pos.y = ypos;
-    pos.z = zpos;
-    player_new(pos,(char *)modelName,"dino", isActive);
+
+    entjson = sj_object_get_value(eListjson, "charTallBoi");
+    sj_get_integer_value(sj_object_get_value(entjson, "doesSpawn"), &doesSpawn);
+    if (doesSpawn)
+    {
+        sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
+        sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
+        sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
+        sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
+        pos.x = xpos;
+        pos.y = ypos;
+        pos.z = zpos;
+        //if (isActive == 1)
+        //{
+        //    w->activeCharacter = character_tallBoi_spawn(pos);
+        //}else{
+            character_tallBoi_spawn(pos);
+        //}
+    }
+
+    entjson = sj_object_get_value(eListjson, "charSmallBoi");
+    sj_get_integer_value(sj_object_get_value(entjson, "doesSpawn"), &doesSpawn);
+    if (doesSpawn)
+    {
+        sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
+        sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
+        sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
+        sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
+        pos.x = xpos;
+        pos.y = ypos;
+        pos.z = zpos;
+        //if (isActive == 1)
+        //{
+        //    w->activeCharacter = character_smallBoi_spawn(pos);
+        //}else{
+            character_smallBoi_spawn(pos);
+        //}
+    }
+
+    entjson = sj_object_get_value(eListjson, "charFatBoi");
+    sj_get_integer_value(sj_object_get_value(entjson, "doesSpawn"), &doesSpawn);
+    if (doesSpawn)
+    {
+        sj_get_float_value(sj_object_get_value(entjson, "xpos"), &xpos);
+        sj_get_float_value(sj_object_get_value(entjson, "ypos"), &ypos);
+        sj_get_float_value(sj_object_get_value(entjson, "zpos"), &zpos);
+        sj_get_integer_value(sj_object_get_value(entjson, "isActive"), &isActive);
+        pos.x = xpos;
+        pos.y = ypos;
+        pos.z = zpos;
+        //if (isActive == 1)
+        //{
+        //    w->activeCharacter = character_fatBoi_spawn(pos);
+        //}else{
+            character_fatBoi_spawn(pos);
+        //}
+    }
+
 
     sj_free(eListjson);
     sj_free(entjson);
     sj_free(json);
+    current_level = w;
     return w;
 }
 
@@ -114,19 +206,23 @@ void world_run_updates(World *world)
 
     if (keys[SDL_SCANCODE_1])
     {
-        if(!strcmp(entity_get_active_player()->charName,"ball"))
-        {
-            entity_get_active_player()->activePlayer = 0;
-            entity_get_player_by_name("ball")->activePlayer = 1;
-        }
+        current_level->activeCharacter = entity_get_character_by_id(1);
     }
     if (keys[SDL_SCANCODE_2])
     {
-        if(!strcmp(entity_get_active_player()->charName,"dino"))
-        {
-            entity_get_active_player()->activePlayer = 0;
-            entity_get_player_by_name("dino")->activePlayer = 1;
-        }
+        current_level->activeCharacter = entity_get_character_by_id(2);
+    }
+    if (keys[SDL_SCANCODE_3])
+    {
+        current_level->activeCharacter = entity_get_character_by_id(3);
+    }
+    if (keys[SDL_SCANCODE_4])
+    {
+        current_level->activeCharacter = entity_get_character_by_id(4);
+    }
+    if (keys[SDL_SCANCODE_5])
+    {
+        current_level->activeCharacter = entity_get_character_by_id(5);
     }
 }
 

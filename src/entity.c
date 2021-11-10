@@ -110,6 +110,10 @@ void entity_think_all()
         {
             continue;// skip this iteration of the loop
         }
+        if (entity_manager.entity_list[i].entType == ENT_PLAYER)// SKIP PLAYERS
+        {
+            continue;// skip this iteration of the loop
+        }
         entity_think(&entity_manager.entity_list[i]);
     }
 }
@@ -144,6 +148,7 @@ void entity_update(Entity *self)
     
     gfc_matrix_translate(self->modelMat,self->position);
     
+    if (self->entType == ENT_PLAYER)return;
     if (self->update)self->update(self);
 }
 
@@ -160,7 +165,7 @@ void entity_update_all()
     }
 }
 
-Entity *entity_get_active_player()
+Entity *entity_get_character_by_id(int id)
 {
     int i;
     for (i = 0; i < entity_manager.entity_count; i++)
@@ -169,12 +174,18 @@ Entity *entity_get_active_player()
         {
             continue;// skip this iteration of the loop
         }
-        if (entity_manager.entity_list[i].activePlayer == 1)
+        if(entity_manager.entity_list[i].char_ID)
         {
-            return &entity_manager.entity_list[i];
+            if (entity_manager.entity_list[i].char_ID == id)
+            {
+                slog("%i", entity_manager.entity_list[i].char_ID);
+                slog("%i",id);
+                return &entity_manager.entity_list[i];
+            }
         }
+            
     }
-    slog("Active player doesn't exist");
+    slog("Char ID %i doesn't exist", id);
     return NULL;
 }
 
@@ -187,31 +198,21 @@ Entity *entity_get_player_by_name(char *charName)
         {
             continue;// skip this iteration of the loop
         }
-        if (strcmp(entity_manager.entity_list[i].charName,(const char *)charName))
+        if(entity_manager.entity_list[i].charName)
         {
-            return &entity_manager.entity_list[i];
+            if (strcmp(entity_manager.entity_list[i].charName,charName))
+            {
+                slog("%s", entity_manager.entity_list[i].charName);
+                slog("%s",charName);
+                return &entity_manager.entity_list[i];
+            }
         }
+            
     }
     slog("CharName %s doesn't exist", charName);
     return NULL;
 }
 
-int entity_is_active_player()
-{
-    int i;
-    for (i = 0; i < entity_manager.entity_count; i++)
-    {
-        if (!entity_manager.entity_list[i]._inuse)// not used yet
-        {
-            continue;// skip this iteration of the loop
-        }
-        if (entity_manager.entity_list[i].activePlayer == 1)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
 
 int ent_is_grounded(Entity *ent)
 {
@@ -222,6 +223,19 @@ int ent_is_grounded(Entity *ent)
         return 1;
     }else{
         return 0;
+    }
+}
+
+char *ent_get_name(Entity *ent)
+{
+    if(!ent)return NULL;
+
+    if (ent->charName)
+    {
+        return ent->charName;
+    }else{
+        slog("ent has no name");
+        return NULL;
     }
 }
 /*eol@eof*/

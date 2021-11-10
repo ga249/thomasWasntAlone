@@ -15,7 +15,16 @@ typedef struct
     Model *worldModel;
     List *entityList;       //entities that exist in the world
     int numKeys;
+    Entity *activeCharacter;
 }World;
+
+World *get_current_level();
+
+Entity *get_active_character();
+
+void active_character_think();
+
+void active_character_update();
 
 World *world_load(char *filename);
 

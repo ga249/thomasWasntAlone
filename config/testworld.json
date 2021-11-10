@@ -6,16 +6,40 @@
         {
             "charBall":
             {
-                "modelName":"sphere",
+                "doesSpawn": 1,
                 "xpos": 0.0,
                 "ypos": 0.0,
                 "zpos": 0.0,
                 "isActive": 1
             },
-            "charDino":
+            "charBox":
             {
-                "modelName":"key",
+                "doesSpawn": 1,
                 "xpos": 20.0,
+                "ypos": 20.0,
+                "zpos": 0.0,
+                "isActive": 0
+            },
+            "charTallBoi":
+            {
+                "doesSpawn": 1,
+                "xpos": -20.0,
+                "ypos": -20.0,
+                "zpos": 0.0,
+                "isActive": 0
+            },
+            "charSallBoi":
+            {
+                "doesSpawn": 1,
+                "xpos": 20.0,
+                "ypos": -20.0,
+                "zpos": 0.0,
+                "isActive": 0
+            },
+            "charFatBoi":
+            {
+                "doesSpawn": 1,
+                "xpos": -20.0,
                 "ypos": 20.0,
                 "zpos": 0.0,
                 "isActive": 0

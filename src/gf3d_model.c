@@ -76,6 +76,20 @@ Model * gf3d_model_new()
     return NULL;
 }
 
+void gf3d_model_change_texture(Model *model,char * filename)
+{
+    if(!model)return;
+    if(!filename)return;
+    if (strcmp((const char*)filename, ""))
+    {
+        slog("no string provided for texture name");
+    }
+    TextLine assetname;
+
+    snprintf(assetname,GFCLINELEN,"images/%s.png",filename);
+    model->texture = gf3d_texture_load(assetname);
+}
+
 Model * gf3d_model_load(char * filename)
 {
     TextLine assetname;

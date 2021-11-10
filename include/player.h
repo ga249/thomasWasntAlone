@@ -10,4 +10,7 @@ Entity *player_new(Vector3D position,char *modelName,char *charName, int isActiv
 
 void    player_think(Entity *self);
 
+void    player_update(Entity *self);
+
+
 #endif
