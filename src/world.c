@@ -7,6 +7,7 @@
 #include "characters.h"
 #include "door.h"
 #include "button.h"
+#include "pressure_plate.h"
 
 static World *current_level = NULL;
 
@@ -186,6 +187,11 @@ World *world_load(char *filename)
     pos.y = -30;
     pos.z = 2;
     button_new(pos);
+
+    pos.x = 0;
+    pos.y = 30;
+    pos.z = -1;
+    pplate_new(pos);
 
     sj_free(eListjson);
     sj_free(entjson);

@@ -9,6 +9,10 @@
  * @param position a vector3d for center of pressure plate
  * @return pointer to pressure plate entity
  */
-Entity *pPlate_new(Vector3D position);
+Entity *pplate_new(Vector3D position);
+
+void pplate_think(Entity *self);
+
+void pplate_update(Entity *self);
 
 #endif
