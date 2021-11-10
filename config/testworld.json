@@ -15,8 +15,8 @@
             "charBox":
             {
                 "doesSpawn": 1,
-                "xpos": 20.0,
-                "ypos": 20.0,
+                "xpos": -10.0,
+                "ypos": 0.0,
                 "zpos": 0.0,
                 "isActive": 0
             },
@@ -32,15 +32,15 @@
             {
                 "doesSpawn": 1,
                 "xpos": 20.0,
-                "ypos": -20.0,
+                "ypos": 0.0,
                 "zpos": 0.0,
                 "isActive": 0
             },
             "charFatBoi":
             {
                 "doesSpawn": 1,
-                "xpos": -20.0,
-                "ypos": 20.0,
+                "xpos": 10.0,
+                "ypos": 0.0,
                 "zpos": 0.0,
                 "isActive": 0
             }

@@ -25,7 +25,7 @@ int main(int argc,char *argv[])
     Uint8 validate = 0;
     const Uint8 * keys;
     World *w;
-    Vector3D keypos = {-20,20,0};
+    Vector3D keypos = {20,-20,0};
     Vector3D keypos2 = {-20,-30,0};
     
     for (a = 1; a < argc;a++)
@@ -54,10 +54,6 @@ int main(int argc,char *argv[])
     new_key(keypos,"key");
     new_key(keypos2,"key");
 
-    for (a = 0; a < 10;a++)
-    {
-        agumon_new(vector3d(a * 10 -50,0,0));
-    }
     // main game loop
 	slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));

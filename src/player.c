@@ -88,7 +88,11 @@ void player_think(Entity *self)
     {
         vector3d_add(self->position,self->position,-right);
     }
-    if (keys[SDL_SCANCODE_SPACE])self->velocity.z = .25;
+    if (keys[SDL_SCANCODE_SPACE])
+    {
+        if (ent_is_grounded(self))
+        self->velocity.z = .25;
+    }
     if (keys[SDL_SCANCODE_Z])self->position.z -= 0.10;
     
     if (keys[SDL_SCANCODE_DOWN])self->rotation.x -= 0.0010;

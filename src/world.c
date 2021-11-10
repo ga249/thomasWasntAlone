@@ -72,13 +72,13 @@ World *world_load(char *filename)
         gfc_matrix_identity(w->modelMat);
         gfc_matrix_scale(
             w->modelMat,
-            vector3d(10,10,10)
+            vector3d(3,3,3)
         );
         gfc_matrix_translate(
             w->modelMat,
-            vector3d(0,0,-10)
+            vector3d(0,0,-2)
         );
-        gfc_matrix_rotate(w->modelMat, w->modelMat, GFC_HALF_PI,vector3d(1,0,0));
+        //gfc_matrix_rotate(w->modelMat, w->modelMat, GFC_HALF_PI,vector3d(1,0,0));
     }else{
         slog("world data (%s) has no model",filename);
     }
@@ -180,32 +180,32 @@ World *world_load(char *filename)
             character_fatBoi_spawn(pos);
         //}
     }
-    pos.x = 25;
-    pos.y = -15;
+    pos.x = 0;
+    pos.y = 15;
     pos.z = 0;
     door_new(pos);
 
-    pos.x = 25;
-    pos.y = -30;
+    pos.x = -25;
+    pos.y = 30;
     pos.z = 2;
     button_new(pos);
 
     pos.x = 0;
     pos.y = 30;
-    pos.z = -1;
+    pos.z = 0;
     pplate_new(pos);
 
     pos.x = 10;
     pos.y = 30;
-    pos.z = -1;
+    pos.z = 0;
     jpad_new(pos);
 
-    pos.x = 40;
+    pos.x = 30;
     pos.y = 30;
-    pos.z = -1;
-    pos2.x = 40;
-    pos2.y = -40;
-    pos2.z = -1;
+    pos.z = 0;
+    pos2.x = 30;
+    pos2.y = -30;
+    pos2.z = 0;
     
     telepad_make_pair(telepad_new(pos),pos2);
 
