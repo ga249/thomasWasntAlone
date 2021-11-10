@@ -8,6 +8,7 @@
 #include "door.h"
 #include "button.h"
 #include "pressure_plate.h"
+#include "jump_pad.h"
 
 static World *current_level = NULL;
 
@@ -193,6 +194,11 @@ World *world_load(char *filename)
     pos.z = -1;
     pplate_new(pos);
 
+    pos.x = 10;
+    pos.y = 30;
+    pos.z = -1;
+    jpad_new(pos);
+
     sj_free(eListjson);
     sj_free(entjson);
     sj_free(json);
@@ -240,6 +246,7 @@ void world_run_updates(World *world)
     {
         current_level->activeCharacter = entity_get_character_by_id(5);
     }
+
 }
 
 void world_add_entity(World *world,Entity *entity);

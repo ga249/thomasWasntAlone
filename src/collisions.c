@@ -49,16 +49,13 @@ int collision_point_sphere(Vector3D point, Vector3D sphere, float radius)
 
 int collision_rect_rect(Vector3D r1min,Vector3D r1max,Vector3D r2min,Vector3D r2max)
 {
-    if (r1max.x > r2min.x ||
-        r1min.x < r2max.x ||
-        r1max.z < r2min.z ||
-        r1min.z > r2max.z ||
-        r1max.y > r2min.y ||
-        r1min.y < r2max.y)
+    if ((r1max.x > r2min.x && r1min.x < r2max.x) &&
+        (r1max.z > r2min.z && r1min.z < r2max.z) &&
+        (r1max.y > r2min.y && r1min.y < r2max.y))
     {
-        return 0;
-    }else{
         return 1;
+    }else{
+        return 0;
     }
 }
 

@@ -13,6 +13,7 @@
 #define ENT_DOOR   5
 #define ENT_BUTTON 6
 #define ENT_PLATE  7
+#define ENT_PAD    8
 
 
 typedef struct Entity_S

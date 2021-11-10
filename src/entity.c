@@ -129,7 +129,7 @@ void entity_update(Entity *self)
     {
         if(!ent_is_grounded(self))
         {
-            self->acceleration.z = -.005;
+            self->acceleration.z = -.0025;
         }else if (ent_is_grounded(self)){
             self->position.z += .5;
             self->position.z = 0;

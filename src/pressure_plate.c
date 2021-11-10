@@ -24,7 +24,6 @@ Entity *pplate_new(Vector3D position)
     pplate->entType = ENT_PLATE;
     pplate->charName = "pplate";
     pplate->hasGravity = 0;
-    pplate->unlocked = 0;
     pplate->hbType = HB_SPHERE;
     pplate->hbRadius = 3;
     return pplate;

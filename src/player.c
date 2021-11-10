@@ -96,7 +96,7 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_RIGHT])self->rotation.z -= 0.0010;
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0010;
 
-    slog("keyCount: %i", self->keyCount);
+    //slog("keyCount: %i", self->keyCount);
 
 }
 

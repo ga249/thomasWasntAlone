@@ -23,9 +23,8 @@ Entity *button_new(Vector3D position)
     button->entType = ENT_BUTTON;
     button->charName = "button";
     button->hasGravity = 0;
-    button->unlocked = 0;
     button->hbType = HB_SPHERE;
-    button->hbRadius = 3;
+    button->hbRadius = 4;
     return button;
 }
 
