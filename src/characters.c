@@ -116,7 +116,7 @@ Entity *character_smallBoi_spawn(Vector3D position)
 
     Vector3D min,max;
     
-    self->model = gf3d_model_load("tallBoi");
+    self->model = gf3d_model_load("smallBoi");
     self->charName = "smallBoi";
     self->char_ID = CHAR_4;
     character_load_common(self, position);
@@ -147,7 +147,7 @@ Entity *character_fatBoi_spawn(Vector3D position)
 
     Vector3D min,max;
     
-    self->model = gf3d_model_load("tallBoi");
+    self->model = gf3d_model_load("fatBoi");
     self->charName = "fatBoi";
     self->char_ID = CHAR_5;
     character_load_common(self, position);
