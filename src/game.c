@@ -10,6 +10,7 @@
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 #include "gf3d_texture.h"
+#include "gf3d_sprite.h"
 
 #include "entity.h"
 #include "agumon.h"
@@ -24,6 +25,9 @@ int main(int argc,char *argv[])
     int a;
     Uint8 validate = 0;
     const Uint8 * keys;
+    Sprite *mouse = NULL;
+    int mousex,mousey;
+    float mouseFrame = 0;
     World *w;
     Vector3D keypos = {20,-20,0};
     Vector3D keypos2 = {-20,-30,0};
@@ -49,13 +53,18 @@ int main(int argc,char *argv[])
 	slog_sync();
     
     entity_system_init(1024);
+
+    mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
+
     w = world_load("config/testworld.json");
 
     new_key(keypos,"key");
     new_key(keypos2,"key");
 
+    slog_sync();
+    gf3d_camera_set_scale(vector3d(1,1,1));
+
     // main game loop
-	slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
     
     slog("gf3d main loop begin");
@@ -63,6 +72,10 @@ int main(int argc,char *argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+        SDL_GetMouseState(&mousex,&mousey);
+
+        mouseFrame += 0.01;
+        if (mouseFrame >= 16)mouseFrame = 0;
         
         world_run_updates(w);
         entity_think_all();
@@ -80,8 +93,12 @@ int main(int argc,char *argv[])
         // for each mesh, get a command and configure it from the pool
         gf3d_vgraphics_render_start();
 
-                world_draw(w);
-                entity_draw_all();
+                //3D draws
+                    world_draw(w);
+                    entity_draw_all();
+
+                //2D draws
+                    gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(1,1),(Uint32)mouseFrame);
             
         gf3d_vgraphics_render_end();
 
