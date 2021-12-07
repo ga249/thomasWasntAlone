@@ -63,37 +63,37 @@ void player_think(Entity *self)
     vector3d_set_magnitude(&up,0.1);
     forward.z = 0;
     self->fwd = forward;
-    //slog("fwd.xyz: %f, %f, %f",forward.x,forward.y,forward.z);
+    slog("fwd.xyz: %f, %f, %f",forward.x,forward.y,forward.z);
     //slog("right.xyz: %f, %f, %f",right.x,right.y,right.z);
     //slog("up.xyz: %f, %f, %f",up.x,up.y,up.z);
-    //slog("rot.x: %f, rot.y: %f, rot.z: %f", self->rotation.x,self->rotation.y,self->rotation.z);
+    slog("rot.x: %f, rot.y: %f, rot.z: %f", self->rotation.x,self->rotation.y,self->rotation.z);
 
     
     //slog("z: %f", self->position.z);
     if (keys[SDL_SCANCODE_W])
     {   
-        vector3d_add(self->position,self->position,forward);
+        vector3d_add(self->position,self->position,-forward);
         //self->velocity = forward;
     }
     if (keys[SDL_SCANCODE_S])
     {
-        vector3d_add(self->position,self->position,-forward);
+        vector3d_add(self->position,self->position,forward);
         //self->velocity = vector3d_negative(forward);      
     }
     if (keys[SDL_SCANCODE_D])
     {
-        vector3d_add(self->position,self->position,right);
+        vector3d_add(self->position,self->position,-right);
     }
     if (keys[SDL_SCANCODE_A])    
     {
-        vector3d_add(self->position,self->position,-right);
+        vector3d_add(self->position,self->position,right);
     }
     if (keys[SDL_SCANCODE_SPACE])
     {
         if (ent_is_grounded(self))
         self->velocity.z = .25;
     }
-    if (keys[SDL_SCANCODE_Z])self->position.z -= 0.10;
+    //if (keys[SDL_SCANCODE_Z])self->position.z -= 0.10;
     
     if (keys[SDL_SCANCODE_DOWN])self->rotation.x -= 0.0010;
     if (keys[SDL_SCANCODE_UP])self->rotation.x += 0.0010;
@@ -111,7 +111,7 @@ void player_update(Entity *self)
     Vector3D fwd = self->fwd;
     Vector3D min,max;
     vector3d_set_magnitude(&fwd, 7);
-    vector3d_add(camPos,camPos,vector3d_negative(fwd));
+    vector3d_add(camPos,camPos,fwd);
     camPos.z += 3;
 
     gf3d_camera_set_position(camPos);
