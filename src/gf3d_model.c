@@ -82,7 +82,7 @@ void gf3d_model_change_texture(Model *model,char * filename)
     if(!filename)return;
     if (strcmp((const char*)filename, ""))
     {
-        slog("no string provided for texture name");
+        //slog("no string provided for texture name");
     }
     TextLine assetname;
 

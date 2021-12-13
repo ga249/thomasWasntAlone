@@ -114,7 +114,7 @@ void player_update(Entity *self)
     vector3d_add(camPos,camPos,fwd);
     camPos.z += 3;
 
-    slog("posX: %f posY: %f",self->position.x, self->position.y);
+    //slog("posX: %f posY: %f",self->position.x, self->position.y);
     gf3d_camera_set_position(camPos);
     gf3d_camera_set_rotation(self->rotation);
 

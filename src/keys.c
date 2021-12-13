@@ -3,7 +3,7 @@
 #include "keys.h"
 #include "collisions.h"
 #include "world.h"
-
+#include "sounds.h"
 
 #define KEY_OFFSET 2.5
 
@@ -54,6 +54,7 @@ void key_think(Entity *self)
     }
     if (collision_ent_ent(self,get_active_character()))
     {
+        play_keyJingle();
         if(self->target)
         {
             gfc_list_delete_data(self->target->keys,self);

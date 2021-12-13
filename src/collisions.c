@@ -154,3 +154,24 @@ int collision_bounds(Entity *ent)
     
     return 0;
 }
+
+int collision_mouse_rect(Vector2D mPos, Vector2D rPos, Vector2D widthHeight)
+{
+    if (mPos.x < rPos.x || mPos.x > rPos.x + widthHeight.x ||
+        mPos.y < rPos.y || mPos.y > rPos.y + widthHeight.y)
+        {
+            return 0;
+        }
+    return 1;
+}
+
+int collide_menu(SDL_Rect r1, Vector2D m){
+    if (((r1.x + r1.w) <      m.x)  ||
+       ((r1.y + r1.h) <       m.y) ||
+       (r1.x >                m.x)  ||
+       (r1.y >                m.y))
+    {
+        return 0;
+    }
+    return 1;
+}

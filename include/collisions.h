@@ -10,4 +10,8 @@ int collision_ent_ent(Entity *ent1, Entity *ent2);
 
 int collision_bounds(Entity *ent);
 
+int collision_mouse_rect(Vector2D mPos, Vector2D rPos, Vector2D widthHeight);
+
+int collide_menu(SDL_Rect r1, Vector2D m);
+
 #endif
