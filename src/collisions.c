@@ -97,7 +97,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
         case HB_SPHERE:
             if (collision_sphere_sphere(ent1->position,ent1->hbRadius,ent2->position,ent2->hbRadius))
             {
-                slog("TOUCHINGGGGG");
+                //slog("TOUCHINGGGGG");
                 return 1;
             }
             return 0;
@@ -106,7 +106,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
         case HB_RECT:
             if (collision_sphere_rect(ent1->position, ent1->hbRadius, ent2->hbMin,ent2->hbMax))
             {
-                slog("TOUCHINGGGGG");
+                //slog("TOUCHINGGGGG");
                 return 1;
             }
             break;
@@ -120,7 +120,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
             //sphere vs rect collision test
             if (collision_sphere_rect(ent2->position, ent2->hbRadius, ent1->hbMin,ent1->hbMax))
             {
-                slog("TOUCHINGGGGG");
+                //slog("TOUCHINGGGGG");
                 return 1;
             }
             break;
@@ -129,7 +129,7 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
             //rect vs rect collision test
             if (collision_rect_rect(ent1->hbMin, ent1->hbMax, ent2->hbMin, ent2->hbMax))
             {
-                slog("TOUCHINGGGGG");
+                //slog("TOUCHINGGGGG");
                 return 1;
             }
             break;

@@ -4,6 +4,7 @@
 #include "simple_logger.h"
 
 #include "entity.h"
+#include "world.h"
 
 typedef struct
 {
@@ -119,7 +120,6 @@ void entity_think_all()
     }
 }
 
-
 void entity_update(Entity *self)
 {
     if (!self)return;
@@ -127,10 +127,10 @@ void entity_update(Entity *self)
 
     if (self->hasGravity)
     {
-        if(!ent_is_grounded(self))
+        if(!ent_is_grounded(self) && self->onPForm == 0)
         {
             self->acceleration.z = -.0025;
-        }else if (ent_is_grounded(self)){
+        }else if (ent_is_grounded(self) || self->onPForm == 1){
             self->position.z += .5;
             self->position.z = 0;
             self->acceleration.z = 0;

@@ -14,6 +14,7 @@
 #define ENT_BUTTON 6
 #define ENT_PLATE  7
 #define ENT_PAD    8
+#define ENT_PLAT   9    
 
 
 typedef struct Entity_S
@@ -32,6 +33,7 @@ typedef struct Entity_S
     int         hbType;
     float       hbRadius;
     Vector3D    hbMin,hbMax;
+    Vector3D    lwh;
     
     Vector3D    scale;
     Vector3D    rotation;
@@ -40,6 +42,7 @@ typedef struct Entity_S
     int         entType;
 
     int         hasGravity;
+    int         onPForm;
     
     int         char_ID;
     char       *charName;

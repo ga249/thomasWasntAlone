@@ -11,6 +11,7 @@
 #include "jump_pad.h"
 #include "telepad.h"
 #include "collisions.h"
+#include "platform.h"
 
 static World *current_level = NULL;
 
@@ -218,6 +219,11 @@ World *world_load(char *filename)
     pos.y = 30;
     pos.z = 0;
     jpad_new(pos);
+
+    pos.x = 40;
+    pos.y = 0;
+    pos.z = 0;
+    platform_new(pos,vector3d(2,2,.5));
 
     pos.x = 30;
     pos.y = 30;
