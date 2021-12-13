@@ -63,10 +63,10 @@ void player_think(Entity *self)
     vector3d_set_magnitude(&up,0.1);
     forward.z = 0;
     self->fwd = forward;
-    slog("fwd.xyz: %f, %f, %f",forward.x,forward.y,forward.z);
+    //slog("fwd.xyz: %f, %f, %f",forward.x,forward.y,forward.z);
     //slog("right.xyz: %f, %f, %f",right.x,right.y,right.z);
     //slog("up.xyz: %f, %f, %f",up.x,up.y,up.z);
-    slog("rot.x: %f, rot.y: %f, rot.z: %f", self->rotation.x,self->rotation.y,self->rotation.z);
+    //slog("rot.x: %f, rot.y: %f, rot.z: %f", self->rotation.x,self->rotation.y,self->rotation.z);
 
     
     //slog("z: %f", self->position.z);
@@ -114,6 +114,7 @@ void player_update(Entity *self)
     vector3d_add(camPos,camPos,fwd);
     camPos.z += 3;
 
+    slog("posX: %f posY: %f",self->position.x, self->position.y);
     gf3d_camera_set_position(camPos);
     gf3d_camera_set_rotation(self->rotation);
 

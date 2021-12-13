@@ -98,7 +98,8 @@ int main(int argc,char *argv[])
                     entity_draw_all();
 
                 //2D draws
-                    gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(1,1),(Uint32)mouseFrame);
+                    gf3d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(4,4),(Uint32)mouseFrame);
+                    keys_draw(get_active_character());
             
         gf3d_vgraphics_render_end();
 

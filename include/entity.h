@@ -47,6 +47,7 @@ typedef struct Entity_S
 
     List       *keys;
     int         keyCount;
+    List       *keys2d;
 
     int         unlocked;
     void       *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/

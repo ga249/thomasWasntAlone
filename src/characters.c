@@ -15,6 +15,7 @@ void character_load_common(Entity *self, Vector3D position)
     self->hasGravity = 1;
     self->keys = gfc_list_new_size(20);
     self->keyCount = 0;
+    self->keys2d = gfc_list_new_size(20);
     return;
 }
 

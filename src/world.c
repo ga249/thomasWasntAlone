@@ -10,6 +10,7 @@
 #include "pressure_plate.h"
 #include "jump_pad.h"
 #include "telepad.h"
+#include "collisions.h"
 
 static World *current_level = NULL;
 
@@ -76,6 +77,24 @@ World *world_load(char *filename)
         );
         gfc_matrix_translate(
             w->modelMat,
+            vector3d(0,0,-2)
+        );
+        //gfc_matrix_rotate(w->modelMat, w->modelMat, GFC_HALF_PI,vector3d(1,0,0));
+    }else{
+        slog("world data (%s) has no model",filename);
+    }
+
+    modelName = sj_get_string_value(sj_object_get_value(wjson,"skybox"));
+    if (modelName)
+    {
+        w->skybox = gf3d_model_load((char *)modelName);
+        gfc_matrix_identity(w->skyMat);
+        //gfc_matrix_scale(
+        //    w->modelMat,
+        //    vector3d(3,3,3)
+        //);
+        gfc_matrix_translate(
+            w->skyMat,
             vector3d(0,0,-2)
         );
         //gfc_matrix_rotate(w->modelMat, w->modelMat, GFC_HALF_PI,vector3d(1,0,0));
@@ -221,6 +240,7 @@ void world_draw(World *world)
     if (!world)return;
     if (!world->worldModel)return;// no model to draw, do nothing
     gf3d_model_draw(world->worldModel,world->modelMat);
+    gf3d_model_draw(world->skybox,world->skyMat);
 }
 
 void world_delete(World *world)
@@ -228,6 +248,14 @@ void world_delete(World *world)
     if (!world)return;
     gf3d_model_free(world->worldModel);
     free(world);
+}
+
+void world_enforce_bounds(Entity *ent)
+{
+    if (ent->position.x > 75)ent->position.x -= .1;
+    if (ent->position.x < -75)ent->position.x += .1;
+    if (ent->position.y > 75)ent->position.y -= .1;
+    if (ent->position.y < -75)ent->position.y += .1;
 }
 
 void world_run_updates(World *world)
@@ -256,6 +284,8 @@ void world_run_updates(World *world)
     {
         current_level->activeCharacter = entity_get_character_by_id(5);
     }
+
+    world_enforce_bounds(current_level->activeCharacter);
 
 }
 

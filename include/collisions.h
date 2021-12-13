@@ -8,4 +8,6 @@ int collision_sphere_sphere(Vector3D s1pos,float s1Radius,Vector3D s2pos,float s
 
 int collision_ent_ent(Entity *ent1, Entity *ent2);
 
+int collision_bounds(Entity *ent);
+
 #endif

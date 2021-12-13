@@ -12,7 +12,9 @@
 typedef struct
 {
     Matrix4 modelMat;
+    Matrix4 skyMat;
     Model *worldModel;
+    Model *skybox;
     List *entityList;       //entities that exist in the world
     int numKeys;
     Entity *activeCharacter;

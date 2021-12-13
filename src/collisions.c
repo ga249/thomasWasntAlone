@@ -142,5 +142,15 @@ int collision_ent_ent(Entity *ent1, Entity *ent2)
 
     }
     return 0;
+}
+
+int collision_bounds(Entity *ent)
+{
+    if (ent->position.x > 75 || ent->position.x < -75 ||
+        ent->position.y > 75 || ent->position.y < 75)
+        {
+            return 1;
+        }
     
+    return 0;
 }

@@ -2,6 +2,7 @@
     "world":
     {
         "model":"level",
+        "skybox":"skybox",
         "entityList":
         {
             "charBall":
